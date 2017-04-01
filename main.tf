@@ -37,8 +37,11 @@ resource "aws_security_group" "instance"  {
 
 resource "aws_autoscaling_group" "example"  {
     launch_configuration = "${aws_launch_configuration.example.id}"
-    availability_zones  = ["${data.aws_availability_zones.available.names}"]
-
+    availability_zones = ["${data.aws_availability_zones.available.names[0]}"]
+    availability_zones = ["${data.aws_availability_zones.available.names[1]}"]
+    availability_zones = ["${data.aws_availability_zones.available.names[3]}"]
+    availability_zones = ["${data.aws_availability_zones.available.names[4]}"]
+    
     load_balancers  = ["${aws_elb.example.name}"]
     health_check_type  = "ELB"
 
@@ -54,7 +57,10 @@ resource "aws_autoscaling_group" "example"  {
 
 resource  "aws_elb" "example" {
   name  = "terraform-asg-example"
-  availability_zones  = ["${data.aws_availability_zones.available.names}"]
+  availability_zones = ["${data.aws_availability_zones.available.names[0]}"]
+  availability_zones = ["${data.aws_availability_zones.available.names[1]}"]
+  availability_zones = ["${data.aws_availability_zones.available.names[3]}"]
+  availability_zones = ["${data.aws_availability_zones.available.names[4]}"]
   security_groups = ["${aws_security_group.elb.id}"]
 
   listener  {
@@ -73,7 +79,7 @@ resource  "aws_elb" "example" {
   }
 }
 
-resource  "aws_security_group"  "elb" {
+resource  "aws_security_group" "elb" {
     name  = "terraform-example-elb"
 
     ingress {
